@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Detalles Libro - Sistema Biblioteca{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <a href="{% url 'libro_lista' %}" class="btn btn-secondary">← Volver</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h3>Información del Libro</h3>
+            </div>
+            <div class="card-body">
+                <p><strong>Título:</strong> {{ libro.titulo }}</p>
+                <p><strong>Autor:</strong> {{ libro.autor }}</p>
+                <p><strong>ISBN:</strong> {{ libro.isbn }}</p>
+                <p><strong>Editorial:</strong> {{ libro.editorial }}</p>
+                <p><strong>Año Publicación:</strong> {{ libro.año_publicacion }}</p>
+                <p><strong>Páginas:</strong> {{ libro.num_paginas }}</p>
+                <p><strong>Precio:</strong> ${{ libro.precio }}</p>
+                <p><strong>Categoría:</strong> <span class="badge bg-secondary">{{ libro.categoria.nombre }}</span></p>
+                <p><strong>Cantidad Total:</strong> {{ libro.cantidad_total }}</p>
+                <p><strong>Disponibles:</strong> <span class="badge bg-success">{{ libro.cantidad_disponible }}</span></p>
+                <p><strong>Agregado:</strong> {{ libro.fecha_agregado|date:"d/m/Y" }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-warning text-white">
+                <h3>Descripción</h3>
+            </div>
+            <div class="card-body">
+                <p>{{ libro.descripcion }}</p>
+            </div>
+        </div>
+        <div class="card mt-3">
+            <div class="card-header bg-primary text-white">
+                <h3>Historial de Préstamos</h3>
+            </div>
+            <div class="card-body">
+                {% if prestamos %}
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Lector</th>
+                                <th>Estado</th>
+                                <th>Préstamo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prestamo in prestamos %}
+                            <tr>
+                                <td>{{ prestamo.lector.nombre|truncatewords:2 }}</td>
+                                <td><span class="badge bg-info">{{ prestamo.estado }}</span></td>
+                                <td>{{ prestamo.fecha_prestamo }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">Sin historial de préstamos</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

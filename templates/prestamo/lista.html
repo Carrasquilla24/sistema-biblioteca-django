@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Préstamos - Sistema Biblioteca{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="page-title">📤 Préstamos</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'prestamo_crear' %}" class="btn btn-warning btn-custom">➕ Nuevo Préstamo</a>
+    </div>
+</div>
+
+{% if prestamos %}
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Libro</th>
+                <th>Lector</th>
+                <th>Prestado</th>
+                <th>Devolución</th>
+                <th>Estado</th>
+                <th>Multa</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prestamo in prestamos %}
+            <tr>
+                <td><strong>{{ prestamo.libro.titulo|truncatewords:3 }}</strong></td>
+                <td>{{ prestamo.lector.nombre|truncatewords:2 }}</td>
+                <td>{{ prestamo.fecha_prestamo }}</td>
+                <td>{{ prestamo.fecha_devolucion_esperada }}</td>
+                <td>
+                    {% if prestamo.estado == 'prestado' %}
+                        <span class="badge bg-warning">Prestado</span>
+                    {% elif prestamo.estado == 'devuelto' %}
+                        <span class="badge bg-success">Devuelto</span>
+                    {% elif prestamo.estado == 'atrasado' %}
+                        <span class="badge bg-danger">Atrasado</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Cancelado</span>
+                    {% endif %}
+                </td>
+                <td>${{ prestamo.multa }}</td>
+                <td>
+                    <a href="{% url 'prestamo_detalles' prestamo.pk %}" class="btn btn-sm btn-info">👁️</a>
+                    {% if prestamo.estado == 'prestado' %}
+                    <form method="post" action="{% url 'prestamo_devolver' prestamo.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-success">📥 Devolver</button>
+                    </form>
+                    {% endif %}
+                    <a href="{% url 'prestamo_editar' prestamo.pk %}" class="btn btn-sm btn-warning">✏️</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">No hay préstamos registrados</div>
+{% endif %}
+{% endblock %}

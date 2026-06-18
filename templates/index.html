@@ -1,0 +1,52 @@
+
+{% extends "base.html" %}
+
+{% block title %}Inicio - Sistema Biblioteca{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-12">
+        <h1 class="page-title">Bienvenido al Sistema de Biblioteca</h1>
+        <p class="lead">Gestiona eficientemente el inventario de libros, lectores y préstamos</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h5 class="card-title">📖 Libros</h5>
+                <p class="card-text">Gestiona el catálogo de libros</p>
+                <a href="{% url 'libro_lista' %}" class="btn btn-light">Ver Libros</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h5 class="card-title">🏷️ Categorías</h5>
+                <p class="card-text">Organiza libros por categoría</p>
+                <a href="{% url 'categoria_lista' %}" class="btn btn-light">Ver Categorías</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h5 class="card-title">👥 Lectores</h5>
+                <p class="card-text">Administra los usuarios de la biblioteca</p>
+                <a href="{% url 'lector_lista' %}" class="btn btn-light">Ver Lectores</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <h5 class="card-title">📤 Préstamos</h5>
+                <p class="card-text">Controla los préstamos de libros</p>
+                <a href="{% url 'prestamo_lista' %}" class="btn btn-light">Ver Préstamos</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

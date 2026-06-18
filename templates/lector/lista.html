@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Lectores - Sistema Biblioteca{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <h1 class="page-title">👥 Lectores</h1>
+    </div>
+    <div class="col-md-4 text-end">
+        <a href="{% url 'lector_crear' %}" class="btn btn-success btn-custom">➕ Registrar Lector</a>
+    </div>
+</div>
+
+{% if lectores %}
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Nombre</th>
+                <th>Cédula</th>
+                <th>Correo</th>
+                <th>Ciudad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lector in lectores %}
+            <tr>
+                <td><strong>{{ lector.nombre }} {{ lector.apellido }}</strong></td>
+                <td>{{ lector.cedula }}</td>
+                <td>{{ lector.correo }}</td>
+                <td>{{ lector.ciudad }}</td>
+                <td>
+                    {% if lector.estado == 'activo' %}
+                        <span class="badge bg-success">Activo</span>
+                    {% elif lector.estado == 'inactivo' %}
+                        <span class="badge bg-secondary">Inactivo</span>
+                    {% else %}
+                        <span class="badge bg-danger">Suspendido</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{% url 'lector_detalles' lector.pk %}" class="btn btn-sm btn-info">👁️</a>
+                    <a href="{% url 'lector_editar' lector.pk %}" class="btn btn-sm btn-warning">✏️</a>
+                    <form method="post" action="{% url 'lector_eliminar' lector.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Eliminar?')">🗑️</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-info">No hay lectores registrados</div>
+{% endif %}
+{% endblock %}
